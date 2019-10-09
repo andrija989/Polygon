@@ -22,14 +22,14 @@ class DefaultCommand extends Command
         $array = json_decode($strJsonFileContents, true);
         $polygons = [];
 
-        foreach($array as $key => $value) {
-            foreach($value as $edges => $edge) {
-                foreach ($edge as $point => $xy) {
-                    $polygon = new Polygons($xy);
-                    $polygons[] += $polygon->poligonPerimeter();
-                }
+        foreach($array['poligoni'] as $edge) {
+            foreach ($edge as $xy) {
+                $polygon = new Polygons($xy);
+                $polygons[] += $polygon->poligonPerimeter();
             }
+
         }
+
 
         asort($polygons);
         $perimeter = json_encode($polygons);

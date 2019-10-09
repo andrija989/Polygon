@@ -3,23 +3,28 @@
 namespace App\Entity;
 
 class Point {
+    /** @var float */
     private $x;
+
+    /** @var float */
     private $y;
 
+    /**
+     * Point constructor.
+     * @param float $x
+     * @param float $y
+     */
     public function __construct($x, $y)
     {
         $this->x = $x;
         $this->y = $y;
     }
 
-    public function setPoint($x, $y)
-    {
-        $this->x = $x;
-        $this->y = $y;
-    }
-
-    public function distance($dot1, $dot2)
-    {
-        return sqrt(pow($dot2->x - $dot1->x, 2) + (pow($dot2->y - $dot1->y, 2)));
+    /**
+     * @param Point $point
+     * @return float
+     */
+    public function distanceFromPoint($point) {
+        return sqrt(pow($point->x - $this->x, 2) + (pow($point->y - $this->y, 2)));
     }
 }
