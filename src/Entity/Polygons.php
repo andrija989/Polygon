@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Point;
 
-class Polygon {
+class Polygons {
     private $perimeter;
     private $edges = [];
 
@@ -32,19 +32,20 @@ class Polygon {
 
     public function poligonPerimeter()
     {
-        $newPerimeter = [];
+        $newPerimeter = 0;
         for($i = 0; $i < count($this->edges); $i++) {
             if($i < count($this->edges) - 1){
                 $x = ( pow($this->edges[$i+1][0]-$this->edges[$i][0],2));
                 $y = ( pow($this->edges[$i+1][1]-$this->edges[$i][1],2));
-                $newPerimeter[] += round( sqrt($x + $y) );
+                $newPerimeter += round( sqrt($x + $y) );
             } else {
                 $x = ( pow($this->edges[0][0]-$this->edges[$i][0],2));
                 $y = ( pow($this->edges[0][1]-$this->edges[$i][1],2));
-                $newPerimeter[] += round( sqrt($x + $y) );
+                $newPerimeter += round( sqrt($x + $y) );
             }
 
         }
+        $this->perimeter = $newPerimeter;
         return $newPerimeter;
     }
 }

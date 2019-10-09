@@ -4,7 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Entity\Polygon;
+use App\Entity\Polygons;
 use App\Entity\Point;
 
 class DefaultCommand extends Command
@@ -19,64 +19,37 @@ class DefaultCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $poligon1 = [
+        $polygon1 = new Polygons([
             [210,10],
             [250,190],
             [160,210]
-        ];
+        ]) ;
         
-        $poligon2 = [
+        $polygon2 = new Polygons([
             [400,20],
             [250,170],
             [170,210],
             [200,40]
-        ];
+        ]) ;
         
-        $poligon3 =  [
+        $polygon3 = new Polygons([
             [50,20],
             [40,10],
             [170,60],
             [48,40]
-        ];
-        $zz = new Point(7,5);
-        function stranice($poligon) {
-            $noviNiz = [];
-            $obim = 0;
-            for($i = 0; $i < count($poligon); $i++) {
-                if($i < count($poligon) - 1){
-                    $x = ( pow($poligon[$i+1][0]-$poligon[$i][0],2));
-                    $y = ( pow($poligon[$i+1][1]-$poligon[$i][1],2));
-                    $noviNiz[] += round( sqrt($x + $y) );
-                } else {
-                    $x = ( pow($poligon[0][0]-$poligon[$i][0],2));
-                    $y = ( pow($poligon[0][1]-$poligon[$i][1],2));
-                    $noviNiz[] += round( sqrt($x + $y) );
-                }
+        ]) ;
 
-            }
-            return $noviNiz;
-        }
-        $poligoni = [];
-        $poligoni[] = stranice($poligon1);
-        $poligoni[] = stranice($poligon2);
-        $poligoni[] = stranice($poligon3);
-                
-        function ObimPoligona($niz)
-        {
-            $nizObima = [];
-            foreach($niz as $objekat) {
-                $nizObima[] += array_sum($objekat);
-            }
-            arsort($nizObima);
-            return $nizObima;
-        }
-        $obim = [];
-        $obim = ObimPoligona($poligoni);
-        $obim = json_encode($obim);
+        $polygons = [];
+        $polygons[] += $polygon1->getPerimeter();
+        $polygons[] += $polygon2->getPerimeter();
+        $polygons[] += $polygon3->getPerimeter();
+        asort($polygons);
+
+        $obim = json_encode($polygons);
         file_put_contents('polygons.json', $obim);
         $output->writeln("Polygons sored by perimeter");
-        
-       
+
+
         var_dump($obim);
     }
 }
