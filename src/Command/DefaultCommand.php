@@ -5,7 +5,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Polygons;
-use App\Entity\Point;
 
 class DefaultCommand extends Command
 {
@@ -19,37 +18,25 @@ class DefaultCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $polygon1 = new Polygons([
-            [210,10],
-            [250,190],
-            [160,210]
-        ]) ;
-        
-        $polygon2 = new Polygons([
-            [400,20],
-            [250,170],
-            [170,210],
-            [200,40]
-        ]) ;
-        
-        $polygon3 = new Polygons([
-            [50,20],
-            [40,10],
-            [170,60],
-            [48,40]
-        ]) ;
-
+        $strJsonFileContents = file_get_contents("poligoni.json");
+        $array = json_decode($strJsonFileContents, true);
         $polygons = [];
-        $polygons[] += $polygon1->getPerimeter();
-        $polygons[] += $polygon2->getPerimeter();
-        $polygons[] += $polygon3->getPerimeter();
-        asort($polygons);
 
-        $obim = json_encode($polygons);
-        file_put_contents('polygons.json', $obim);
+        foreach($array as $key => $value) {
+            foreach($value as $edges => $edge) {
+                foreach ($edge as $point => $xy) {
+                    $polygon = new Polygons($xy);
+                    $polygons[] += $polygon->poligonPerimeter();
+                }
+            }
+        }
+
+        asort($polygons);
+        $perimeter = json_encode($polygons);
+        file_put_contents('polygons.json', $perimeter);
         $output->writeln("Polygons sored by perimeter");
 
 
-        var_dump($obim);
+        var_dump($perimeter);
     }
 }
